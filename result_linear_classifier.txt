@@ -1,0 +1,46 @@
+# batch size more larger, prob of 2 utterances same speaker in 1 batch more => decrease
+# However batch size large contain more hard pair => So we need to trade off. 
+# Không giống text and code embedding bởi vì speaker mặc dù nói giọng điệu khác nhau nhưng vẫn là 1
+# còn text bên paper thì có thể nghĩa gần nhau nhưng không giống nhau
+
+# Add linear classifier, freeze conformer
+# 100 epochs pretraining and 25 epochs finetuning, add only last layer classifier
+
+./logs/log_16/checkpoint_ds.pth|0.885%
+./logs/log_32/checkpoint_ds.pth|0.8966666666666666% => Best
+./logs/log_64/checkpoint_ds.pth|0.8916666666666667%
+./logs/log_128/checkpoint_ds.pth|0.8733333333333333%
+./logs/log_256/checkpoint_ds.pth|0.8733333333333333%
+./logs/log_512/checkpoint_ds.pth|0.8450000000000000%
+
+# 200 epochs pretraining and 25 epochs finetuning
+./logs/log_16/checkpoint_ds.pth|0.895%
+./logs/log_32/checkpoint_ds.pth|0.8966666666666666% => Still best
+./logs/log_64/checkpoint_ds.pth|0.8783333333333333%
+./logs/log_128/checkpoint_ds.pth|0.8933333333333333%
+./logs/log_256/checkpoint_ds.pth|0.8766666666666667%
+./logs/log_512/checkpoint_ds.pth|0.86%
+
+# Zero shot
+# Lấy random mỗi label 3 utterances trong tập train,
+# với tập test (600 utterances) so cosine sim với toàn bộ utterances trong tập train,
+# nếu cosine sim max thì label predict là label của utterance đó. (greedy)
+
+# Result:
+# 100 epochs checkpoint:
+./logs/log_16/checkpoint.pth|0.7633333333333333
+./logs/log_32/checkpoint.pth|0.7466666666666667
+./logs/log_64/checkpoint.pth|0.7666666666666667 => Best
+./logs/log_128/checkpoint.pth|0.745
+./logs/log_256/checkpoint.pth|0.72
+./logs/log_512/checkpoint.pth|0.7233333333333334
+
+# 200 epochs checkpoint:
+./logs/log_16/checkpoint.pth|0.7333333333333333
+./logs/log_32/checkpoint.pth|0.78 => Best
+./logs/log_64/checkpoint.pth|0.76
+./logs/log_128/checkpoint.pth|0.76
+./logs/log_256/checkpoint.pth|0.7516666666666667
+./logs/log_512/checkpoint.pth|0.7416666666666667
+
+
